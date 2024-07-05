@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from . import models
 
 
@@ -19,3 +20,13 @@ class InflowForm(forms.ModelForm):
             'quantity': 'Quantidade',
             'description': 'Descrição',
         }
+
+    def clean_quantity(self):
+        quantity = self.cleaned_data.get('quantity')
+
+        if quantity <= 0:
+            raise ValidationError(
+                "Valor inválido! Favor informar apenas números positivos."
+            )
+
+        return quantity

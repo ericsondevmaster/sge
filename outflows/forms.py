@@ -23,6 +23,11 @@ class OutflowForm(forms.ModelForm):
         quantity = self.cleaned_data.get('quantity')
         product = self.cleaned_data.get('product')
 
+        if quantity <= 0:
+            raise ValidationError(
+                "Valor inválido! Favor informar apenas números positivos."
+            )
+
         if quantity > product.quantity:
             raise ValidationError(
                 f'A quantidade disponível em estoque para o produto {product.title} é de {product.quantity} unidades.'
